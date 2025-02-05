@@ -15,6 +15,10 @@ contract Raffle {
 
     //state variables
     uint256 private immutable i_entranceFee;
+    address payable [] private s_players;
+
+    //events
+    event RaffleEntered(address indexed player, uint256 entranceFee);
 
     //constructor
     constructor(uint256 entranceFee) {
@@ -26,6 +30,8 @@ contract Raffle {
         if(msg.value < i_entranceFee) {
             revert Raffle__SendMoreToEnterRaffle();
         }
+        s_players.push(payable(msg.sender));
+        emit RaffleEntered(msg.sender, i_entranceFee);
     }
 
     function pickWinner() public {}
