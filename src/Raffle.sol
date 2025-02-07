@@ -22,7 +22,7 @@ contract Raffle is VRFConsumerBaseV2Plus {
     bytes32 private immutable i_keyHash;
     uint256 private immutable i_subscriptionId;
     uint32 private immutable i_callbackGasLimit;
-    uint256 private immutable s_LastTimeStamp;
+    uint256 private s_LastTimeStamp;
     address payable[] private s_players;
 
     //events
