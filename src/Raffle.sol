@@ -73,6 +73,16 @@ contract Raffle is VRFConsumerBaseV2Plus {
         uint256 requestId = s_vrfCoordinator.requestRandomWords(request);
     }
 
+    /**
+     * @dev this is a callback function that is called by the chainlink VRF coordinator
+     * It is called when the random number is generated
+     * It is overriden because it is a virtual function in the VRFConsumerBaseV2Plus contract
+     * It is and always will be undefined in the parent contract and must be defined in the child contract 
+     * which means the random word will be given to Raffle.sol and then we will decide what to do with that random number
+     * override = Can modify functions from the parent contract
+     *
+     *  
+     */
     function fulfillRandomWords(uint256 requestId, uint256[] calldata randomWords) internal override {
         //implement this function
     }
