@@ -13,6 +13,7 @@ import {VRFV2PlusClient} from "@chainlink/contracts/src/v0.8/vrf/dev/libraries/V
 contract Raffle is VRFConsumerBaseV2Plus {
     //errors
     error Raffle__SendMoreToEnterRaffle();
+    error Raffle__TransferFailed();
 
     //state variables
     uint16 private constant REQUEST_CONFIRMATIONS = 3;
@@ -22,6 +23,7 @@ contract Raffle is VRFConsumerBaseV2Plus {
     bytes32 private immutable i_keyHash;
     uint256 private immutable i_subscriptionId;
     uint32 private immutable i_callbackGasLimit;
+    address private s_recentWinner;
     uint256 private s_LastTimeStamp;
     address payable[] private s_players;
 
@@ -75,16 +77,23 @@ contract Raffle is VRFConsumerBaseV2Plus {
 
     /**
      * @dev this is a callback function that is called by the chainlink VRF coordinator
-     * It is called when the random number is generated
-     * It is overriden because it is a virtual function in the VRFConsumerBaseV2Plus contract
-     * It is and always will be undefined in the parent contract and must be defined in the child contract 
-     * which means the random word will be given to Raffle.sol and then we will decide what to do with that random number
-     * override = Can modify functions from the parent contract
+     * @dev It is called when the random number is generated
+     * @dev It is overriden because it is a virtual function in the VRFConsumerBaseV2Plus contract
+     * @dev It is and always will be undefined in the parent contract and must be defined in the child contract 
+     * @dev which means the random word will be given to Raffle.sol and then we will decide what to do with that random number
+     * @dev override = Can modify functions from the parent contract
      *
      *  
      */
     function fulfillRandomWords(uint256 requestId, uint256[] calldata randomWords) internal override {
         //implement this function
+        uint256 indexOfWinner = randomWords[0] % s_players.length;
+        address payable recentWinner = s_players[indexOfWinner];
+        s_recentWinner = recentWinner;
+        (bool success,) = recentWinner.call{value: address(this).balance}("");
+        if (!success) {
+            revert Raffle__TransferFailed();
+        }
     }
 
     //getters
