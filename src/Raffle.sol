@@ -18,9 +18,9 @@ contract Raffle is VRFConsumerBaseV2Plus {
 
     //type declarations
     enum RaffleState {
-        OPEN, 
+        OPEN,
         CALCULATING
-        }
+    }
 
     //state variables
     uint16 private constant REQUEST_CONFIRMATIONS = 3;
@@ -69,13 +69,34 @@ contract Raffle is VRFConsumerBaseV2Plus {
 
         s_players.push(payable(msg.sender));
         emit RaffleEntered(msg.sender, i_entranceFee);
-        
     }
 
-    function pickWinner() external {
-        if ((block.timestamp - s_LastTimeStamp) < i_interval) {
+    /**
+     * @dev This function is called by Chainlink Automation (Keepers) to check
+     * if the raffle should run. It returns `true` when all conditions are met:
+     * 1. Enough time has passed since the last raffle.
+     * 2. The raffle is still open.
+     * 3. The contract has ETH.
+     * 4. The subscription has enough LINK.
+     * @param - Not used
+     * @return upKeepNeeded - True if the raffle should start again
+     * @return - Not used
+     */
+    function checkUpKeep(bytes memory) public view returns (bool upKeepNeeded, bytes memory) {
+        bool timeHasPassed = ((block.timestamp - s_LastTimeStamp) >= i_interval);
+        bool isOpen = s_raffleState == RaffleState.OPEN;
+        bool hasBalance = address(this).balance > 0;
+        bool hasPlayers = s_players.length > 0;
+        upKeepNeeded = timeHasPassed && isOpen && hasBalance && hasPlayers;
+        return (upKeepNeeded, " ");
+    }
+
+    function performUpKeep(bytes calldata) external {
+        (bool upKeepNeeded,) = checkUpKeep("");
+        if (!upKeepNeeded) {
             revert();
         }
+
         s_raffleState = RaffleState.CALCULATING;
         VRFV2PlusClient.RandomWordsRequest memory request = VRFV2PlusClient.RandomWordsRequest({
             keyHash: i_keyHash,
@@ -93,13 +114,13 @@ contract Raffle is VRFConsumerBaseV2Plus {
 
     /**
      * @dev this is a callback function that is called by the chainlink VRF coordinator
-     * @dev It is called when the random number is generated
-     * @dev It is overriden because it is a virtual function in the VRFConsumerBaseV2Plus contract
-     * @dev It is and always will be undefined in the parent contract and must be defined in the child contract 
-     * @dev which means the random word will be given to Raffle.sol and then we will decide what to do with that random number
-     * @dev override = Can modify functions from the parent contract
+     * It is called when the random number is generated
+     * It is overriden because it is a virtual function in the VRFConsumerBaseV2Plus contract
+     * It is and always will be undefined in the parent contract and must be defined in the child contract
+     * which means the random word will be given to Raffle.sol and then we will decide what to do with that random number
+     * override = Can modify functions from the parent contract
      *
-     *  
+     *
      */
     function fulfillRandomWords(uint256 requestId, uint256[] calldata randomWords) internal override {
         //checks
@@ -108,12 +129,12 @@ contract Raffle is VRFConsumerBaseV2Plus {
         uint256 indexOfWinner = randomWords[0] % s_players.length;
         address payable recentWinner = s_players[indexOfWinner];
         s_recentWinner = recentWinner;
-        
+
         s_raffleState = RaffleState.OPEN;
         s_players = new address payable[](0);
         s_LastTimeStamp = block.timestamp;
         emit WinnerPicked(s_recentWinner);
-        
+
         //interactions (external contract interactions)
         (bool success,) = recentWinner.call{value: address(this).balance}("");
         if (!success) {
