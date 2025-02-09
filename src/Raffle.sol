@@ -102,7 +102,9 @@ contract Raffle is VRFConsumerBaseV2Plus {
      *  
      */
     function fulfillRandomWords(uint256 requestId, uint256[] calldata randomWords) internal override {
-        //implement this function
+        //checks
+        //effects (internal cotnract state)
+
         uint256 indexOfWinner = randomWords[0] % s_players.length;
         address payable recentWinner = s_players[indexOfWinner];
         s_recentWinner = recentWinner;
@@ -110,12 +112,13 @@ contract Raffle is VRFConsumerBaseV2Plus {
         s_raffleState = RaffleState.OPEN;
         s_players = new address payable[](0);
         s_LastTimeStamp = block.timestamp;
+        emit WinnerPicked(s_recentWinner);
         
+        //interactions (external contract interactions)
         (bool success,) = recentWinner.call{value: address(this).balance}("");
         if (!success) {
             revert Raffle__TransferFailed();
         }
-        emit WinnerPicked(s_recentWinner);
     }
 
     //getters
