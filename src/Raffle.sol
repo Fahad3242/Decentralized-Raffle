@@ -120,7 +120,7 @@ contract Raffle is VRFConsumerBaseV2Plus {
      * It is and always will be undefined in the parent contract and must be defined in the child contract
      * which means the random word will be given to Raffle.sol and then we will decide what to do with that random number
      * override = Can modify functions from the parent contract
-     *
+     *inherited from VRFConsumerBaseV2Plus contract
      *
      */
     function fulfillRandomWords(uint256 requestId, uint256[] calldata randomWords) internal override {
