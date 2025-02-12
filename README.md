@@ -5,3 +5,6 @@ This is a smart contract for a decentralized raffle system that allows users to 
 - Users can enter the raffle by sending the required entrance fee.
 - The contract restricts new entries during the winner selection process.
 - The entire contract balance is sent to the winner upon selection.
+- Implements **Chainlink VRF** to generate a provably fair random number for winner selection.
+- Uses **Chainlink Automation** to automatically trigger the winner selection based on predefined conditions.
+
