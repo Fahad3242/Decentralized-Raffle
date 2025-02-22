@@ -33,4 +33,8 @@ contract RaffleTest is Test {
         callbackGasLimit = config.callbackGasLimit;
     }
 
+    function testRaffleInitializesInOpenState() public view {
+        assertEq(raffle.getRaffleState() == Raffle.RaffleState.OPEN, true);
+    }
+
 }
