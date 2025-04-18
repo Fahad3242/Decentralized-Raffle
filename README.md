@@ -14,4 +14,5 @@ This is a smart contract for a decentralized raffle system that allows users to 
 - The entire contract balance is sent to the winner upon selection.
 - Implements **Chainlink VRF** to generate a provably fair random number for winner selection.
 - Uses **Chainlink Automation** to automatically trigger the winner selection based on predefined conditions.
+-Made the contract create a subscription Id manually itself rather than fetching from Chainlink UI and then input in the code.
 
