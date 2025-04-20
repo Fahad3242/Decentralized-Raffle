@@ -74,6 +74,30 @@ forge test -vv
 forge test --fork-url <SEPOLIA_RPC_URL> -vv
 
 ```
+## 📜 Chainlink VRF Integration
+
+### VRF Coordinator:
+
+- Local: Mocked
+
+- Sepolia: Real Chainlink VRF Coordinator
+
+### Randomness Flow:
+
+- `performUpKeep()` requests random words.
+
+- Chainlink VRF responds via `fulfillRandomWords()`.
+
+- A random player is selected and wins the prize pool.
+
+### Subscription Management:
+
+- Create subscriptions with `CreateSubscription.s.sol`
+
+- Fund subscriptions with `FundSubscription.s.sol`
+
+- Add consumer contracts with `AddConsumer.s.sol`
+
 
 
 
