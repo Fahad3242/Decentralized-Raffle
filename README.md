@@ -98,6 +98,44 @@ forge test --fork-url <SEPOLIA_RPC_URL> -vv
 
 - Add consumer contracts with `AddConsumer.s.sol`
 
+## 🧩 Important Scripts
+
+| Script | Purpose |
+| --- | --- |
+| `CreateSubscription.s.sol` | Create a new VRF subscription |
+| `FundSubscription.s.sol` | Fund a VRF subscription with LINK |
+| `AddConsumer.s.sol` | Add Raffle contract as a consumer to the VRF subscription |
+
+## 🔑 Configurations (`HelperConfig.s.sol`)
+
+Supports two environments:
+
+- **Local Anvil network**
+  - Mocks deployed for VRFCoordinator and LinkToken
+  - Subscription is automatically created and funded
+
+- **Sepolia Testnet**
+  - Preconfigured addresses for VRF Coordinator, LINK token, and gas lanes
+  - Real subscription ID required
+
+> To add support for a new network, modify `HelperConfig.s.sol` accordingly.
+
+---
+
+## 📈 Future Enhancements
+
+- Frontend dApp to interact with the raffle
+- Chainlink VRF fulfillment automation for local testing
+- Multiple winners feature
+- Prize pool splitting
+- Gas optimizations
+
+---
+
+## 👨‍💻 Author
+
+- **Muhammad Fahad**
+
 
 
 
