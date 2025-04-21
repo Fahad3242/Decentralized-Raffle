@@ -106,4 +106,21 @@ contract RaffleTest is Test {
         assert(!upKeepNeeded);
     }
 
+    function testPerformUpKeepWorksWhenConditionsAreMet() public {
+    // Arrange
+    vm.prank(PLAYER);
+    raffle.enterRaffle{value: entranceFee}(); // Player enters the raffle
+
+    // Fast forward time to pass the interval check
+    vm.warp(block.timestamp + interval + 1);
+    vm.roll(block.number + 1);
+
+    // Act
+    raffle.performUpKeep("");
+
+    // Assert
+    assertEq(uint256(raffle.getRaffleState()), uint256(Raffle.RaffleState.CALCULATING));
+}
+
+
 }
