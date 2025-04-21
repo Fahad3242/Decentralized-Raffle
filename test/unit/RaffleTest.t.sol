@@ -122,5 +122,16 @@ contract RaffleTest is Test {
     assertEq(uint256(raffle.getRaffleState()), uint256(Raffle.RaffleState.CALCULATING));
 }
 
+function testPerformUpKeepRevertsIfTimeHasNotPassed() public {
+    // Arrange
+    vm.prank(PLAYER);
+    raffle.enterRaffle{value: entranceFee}(); 
+
+    // Act / Assert
+    vm.expectRevert(Raffle.Raffle__UpkeepNotNeeded.selector);
+    raffle.performUpKeep("");
+}
+
+
 
 }
