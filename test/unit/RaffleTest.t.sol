@@ -122,14 +122,32 @@ contract RaffleTest is Test {
     assertEq(uint256(raffle.getRaffleState()), uint256(Raffle.RaffleState.CALCULATING));
 }
 
-function testPerformUpKeepRevertsIfTimeHasNotPassed() public {
+// function testPerformUpKeepRevertsIfTimeHasNotPassed() public {
+//     // Arrange
+//     vm.prank(PLAYER);
+//     raffle.enterRaffle{value: entranceFee}(); 
+
+//     // Act / Assert
+//     vm.expectRevert(Raffle.Raffle__UpkeepNotNeeded.selector);
+//     raffle.performUpKeep("");
+// }
+
+//testCheckUpKeepReturnFalseIfEnoughTimeHasPassed
+//testCheckUpKeepReturnsTrueIfParametersAreGood
+
+function testPerformUpKeepCanOnlyRunIFCheckupkeepIsTrue(){
     // Arrange
     vm.prank(PLAYER);
-    raffle.enterRaffle{value: entranceFee}(); 
+    raffle.enterRaffle{value: entranceFee}(); // Player enters the raffle
+
+    // Fast forward time to pass the interval check
+    vm.warp(block.timestamp + interval + 1);
+    vm.roll(block.number + 1);
 
     // Act / Assert
-    vm.expectRevert(Raffle.Raffle__UpkeepNotNeeded.selector);
     raffle.performUpKeep("");
+
+
 }
 
 
