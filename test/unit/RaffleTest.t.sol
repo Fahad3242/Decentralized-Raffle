@@ -24,6 +24,8 @@ contract RaffleTest is Test {
     event RaffleEntered(address indexed player, uint256 entranceFee);
     event WinnerPicked(address indexed winner);
 
+    
+
     function setUp() external {
         DeployRaffle deployer = new DeployRaffle();
         (raffle, helperConfig) = deployer.deployContract();
@@ -169,15 +171,15 @@ function testPerformupkeepRevertsIFCheckupkeepIsFalse()  public {
     
 }
 
-function testPerformUpKeepUdatesRaffleStateAndEmitsRequestId() public {
-    // Arrange
-    vm.prank(PLAYER);
-    raffle.enterRaffle{value: entranceFee}(); // Player enters the raffle
+modifier RaffleEnteredModifier() {
+        vm.prank(PLAYER);
+        raffle.enterRaffle{value: entranceFee}();
+        vm.warp(block.timestamp + interval + 1);
+        vm.roll(block.number + 1);
+        _;
+    }
 
-    // Fast forward time to pass the interval check
-    vm.warp(block.timestamp + interval + 1);
-    vm.roll(block.number + 1);
-
+function testPerformUpKeepUdatesRaffleStateAndEmitsRequestId() public  RaffleEnteredModifier {
     // Act
     vm.recordLogs();
     raffle.performUpKeep("");
