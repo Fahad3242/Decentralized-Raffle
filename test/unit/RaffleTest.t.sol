@@ -195,9 +195,14 @@ function testPerformUpKeepUdatesRaffleStateAndEmitsRequestId() public  RaffleEnt
 
     }
 
-    function testFulfillRandomWordsCanOnlyBeCalledAfterPerformUpKeep() public RaffleEnteredModifier {
+    function testFulfillRandomWordsCanOnlyBeCalledAfterPerformUpKeep(uint256 randomRequestId) public RaffleEnteredModifier {
      // Arrange / Act / Assert
     vm.expectRevert(VRFCoordinatorV2_5Mock.InvalidRequest.selector);    
-    VRFCoordinatorV2_5Mock(vrfCoordinator).fulfillRandomWords(0, address(raffle));
+    VRFCoordinatorV2_5Mock(vrfCoordinator).fulfillRandomWords(randomRequestId, address(raffle));
+    }
+
+    function testFulfillrandomWordsPicksAwinnerResetANDSendMoney() public RaffleEnteredModifier {
+    // Arrange
+    
     }
 }
