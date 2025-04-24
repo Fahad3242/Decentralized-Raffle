@@ -7,8 +7,10 @@ import {Raffle} from "../../src/Raffle.sol";
 import {HelperConfig} from "script/HelperConfig.s.sol";
 import {Vm} from "forge-std/Vm.sol";
 import {VRFCoordinatorV2_5Mock} from "lib/chainlink-brownie-contracts/contracts/src/v0.8/vrf/mocks/VRFCoordinatorV2_5Mock.sol";
+import {console} from "forge-std/console.sol";
+import {CodeConstants} from "script/HelperConfig.s.sol";
 
-contract RaffleTest is Test {
+contract RaffleTest is CodeConstants, Test {
     Raffle public raffle;
     HelperConfig public helperConfig;
 
@@ -195,13 +197,23 @@ function testPerformUpKeepUdatesRaffleStateAndEmitsRequestId() public  RaffleEnt
 
     }
 
-    function testFulfillRandomWordsCanOnlyBeCalledAfterPerformUpKeep(uint256 randomRequestId) public RaffleEnteredModifier {
+    modifier skipFork(){
+        if (block.chainid != LOCAL_CHAIN_ID) {
+            return;
+        }
+        _;
+    }
+
+    function testFulfillRandomWordsCanOnlyBeCalledAfterPerformUpKeep(uint256 randomRequestId) public 
+    RaffleEnteredModifier
+    skipFork {
      // Arrange / Act / Assert
     vm.expectRevert(VRFCoordinatorV2_5Mock.InvalidRequest.selector);    
     VRFCoordinatorV2_5Mock(vrfCoordinator).fulfillRandomWords(randomRequestId, address(raffle));
     }
 
-    function testFulfillrandomWordsPicksAwinnerResetANDSendMoney() public RaffleEnteredModifier {
+    function testFulfillrandomWordsPicksAwinnerResetANDSendMoney() public RaffleEnteredModifier
+    skipFork {
     // Arrange
     uint256 additionalEntrants = 3;
     uint256 startingIndex = 1;
@@ -218,6 +230,8 @@ function testPerformUpKeepUdatesRaffleStateAndEmitsRequestId() public  RaffleEnt
     // Act
     vm.recordLogs();
     raffle.performUpKeep("");
+    console.log("Raffle contract balance:", address(raffle).balance);
+    console.log("Expected winner balance:", expectedWinner.balance);
     Vm.Log[] memory entries = vm.getRecordedLogs();
     bytes32 requestId = entries[1].topics[1];
     VRFCoordinatorV2_5Mock(vrfCoordinator).fulfillRandomWords(uint256(requestId), address(raffle));

@@ -28,6 +28,7 @@ contract HelperConfig is CodeConstants, Script{
         uint256 subscriptionId;
         uint32 callbackGasLimit;
         address link;
+        address account;
     }
 
     NetworkConfig public localNetworkConfig;
@@ -61,7 +62,8 @@ contract HelperConfig is CodeConstants, Script{
             gaslane: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae,
             subscriptionId: 43345989974817608451243104266155238485947286542505724122165566949174835814619, 
             callbackGasLimit: 500000,
-            link: 0x779877A7B0D9E8603169DdbD7836e478b4624789
+            link: 0x779877A7B0D9E8603169DdbD7836e478b4624789,
+            account: 0x94a7a79C68A96f2550727F28DD9Fe9e396A5C080
         });
     }
 
@@ -86,7 +88,8 @@ contract HelperConfig is CodeConstants, Script{
             gaslane: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae,
             subscriptionId: 0,
             callbackGasLimit: 500000,
-            link: address(linkToken)
+            link: address(linkToken),
+            account: 0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38 //this is the default sender address used by foundry when it needs to send some things it uses this address. Extracted from Base.sol.
         }
         );
         return localNetworkConfig;
