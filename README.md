@@ -1,6 +1,6 @@
 # Raffle Smart Contract Project
 
-This project is a full-stack decentralized application (dApp) built for an on-chain Raffle system. It includes smart contract development, automated testing, and deployment scripts, designed for deployment and testing on Ethereum testnets like Sepolia.
+- This project is a full-stack decentralized application (dApp) built for an on-chain Raffle system. It includes smart contract development, automated testing, and deployment scripts, designed for deployment and testing on Ethereum testnets like Sepolia.
 
 ---
 
@@ -31,19 +31,17 @@ This project is a full-stack decentralized application (dApp) built for an on-ch
 
 ### Deploy to Sepolia:
 
-1. Set your environment variables:
+#### 1. Set your environment variables:
 
-\`\`\`bash
+```bash
 export PRIVATE_KEY=your_wallet_private_key
 export SEPOLIA_RPC_URL=https://eth-sepolia.g.alchemy.com/v2/YOUR_ALCHEMY_KEY
-\`\`\`
-
+```
 2. Run the deployment script:
 
-\`\`\`bash
+```bash
 forge script script/DeployRaffle.s.sol:DeployRaffle --rpc-url $SEPOLIA_RPC_URL --broadcast --verify -vvvv
-\`\`\`
-
+```
 - \`--broadcast\`: sends the transaction  
 - \`--verify\`: verifies the contract on Etherscan  
 - \`-vvvv\`: sets verbose logging level  
@@ -54,16 +52,14 @@ forge script script/DeployRaffle.s.sol:DeployRaffle --rpc-url $SEPOLIA_RPC_URL -
 
 ### Run unit tests locally:
 
-\`\`\`bash
+```bash
 forge test
-\`\`\`
-
+```
 ### Run tests against a forked Sepolia chain:
 
-\`\`\`bash
+```bash
 forge test --fork-url https://eth-sepolia.g.alchemy.com/v2/YOUR_ALCHEMY_KEY -vvvv
-\`\`\`
-
+```
 > ⚡ **Note**: Forked tests may require impersonation to interact with Chainlink VRF subscriptions.
 
 ---
