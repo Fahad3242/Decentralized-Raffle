@@ -84,7 +84,9 @@ forge test --fork-url https://eth-sepolia.g.alchemy.com/v2/YOUR_ALCHEMY_KEY -vvv
 ## ⚡ Chainlink Integration
 
 - **VRF Coordinator Address** (Sepolia):  
-  `0x9DdfaCa8183c41ad55329BdeeD9F6A8d53168B1B`
+  ```bash
+  0x9DdfaCa8183c41ad55329BdeeD9F6A8d53168B1B 
+  ```
 
 - Other config (gas lane, subscription ID, etc.) is provided in `HelperConfig.s.sol`.
 
