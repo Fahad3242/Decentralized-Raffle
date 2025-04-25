@@ -37,7 +37,7 @@
 export PRIVATE_KEY=your_wallet_private_key
 export SEPOLIA_RPC_URL=https://eth-sepolia.g.alchemy.com/v2/YOUR_ALCHEMY_KEY
 ```
-2. Run the deployment script:
+#### 2. Run the deployment script:
 
 ```bash
 forge script script/DeployRaffle.s.sol:DeployRaffle --rpc-url $SEPOLIA_RPC_URL --broadcast --verify -vvvv
