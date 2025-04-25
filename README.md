@@ -60,7 +60,7 @@ forge test
 ```bash
 forge test --fork-url https://eth-sepolia.g.alchemy.com/v2/YOUR_ALCHEMY_KEY -vvvv
 ```
-> ⚡ **Note**: Forked tests may require impersonation to interact with Chainlink VRF subscriptions.
+>  **Note**: Forked tests may require impersonation to interact with Chainlink VRF subscriptions.
 
 ---
 
