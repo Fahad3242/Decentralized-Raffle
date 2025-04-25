@@ -1,141 +1,99 @@
-# 🎲 Raffle Contract
+Raffle Smart Contract Project
+This project is a full-stack decentralized application (dApp) built for an on-chain Raffle system. It includes smart contract development, automated testing, and deployment scripts, designed for deployment and testing on Ethereum testnets like Sepolia.
 
-Welcome to the **Raffle** project!  
-This smart contract system allows users to enter a decentralized, autonomous raffle, leveraging **Chainlink VRF v2.5** for verifiable randomness and **Chainlink Automation** for upkeep.
+📦 Project Structure
 
----
+Folder / File	Purpose
+contracts/Raffle.sol	Main Raffle contract logic
+script/DeployRaffle.s.sol	Deployment script for Raffle contract
+script/HelperConfig.s.sol	Network configuration (e.g., Chainlink VRF settings)
+script/Interactions.s.sol	Interaction script for adding consumer to VRF subscription
+test/unit/RaffleTest.t.sol	Unit tests for Raffle contract
+⚙️ Technologies Used
+Solidity
 
-## ✨ Features
+Foundry (Forge, Anvil)
 
-- Decentralized raffle entry with ETH
-- Verifiable randomness using Chainlink VRF v2.5
-- Automated upkeep through Chainlink Keepers
-- Supports local and Sepolia testnet deployments
-- Fully tested using Foundry
+Chainlink VRF v2
 
----
+Sepolia Testnet
 
-## 📂 Project Structure
+[Hardhat/Anvil](optional for local testing)
 
-| File | Purpose |
-|:----|:--------|
-| `src/Raffle.sol` | Core Raffle contract logic |
-| `script/DeployRaffle.s.sol` | Script to deploy Raffle contract |
-| `script/HelperConfig.s.sol` | Network-specific configurations |
-| `script/Interactions.s.sol` | VRF subscription interactions (create, fund, add consumer) |
-| `test/unit/RaffleTest.t.sol` | Unit tests for Raffle functionality |
-| `test/mocks/LinkToken.sol` | Mock Link token for local testing |
-| `foundry.toml` | Foundry configuration file |
+Alchemy or Infura for Sepolia RPC
 
----
+🚀 Deployment
+Deploy to Sepolia:
 
-## ⚙️ Contract Overview
+Set your environment variables:
 
-### `Raffle.sol`
-- Users can enter by paying a minimum `entranceFee`.
-- Periodic checks via Chainlink Automation (Keepers) determine if it's time to pick a winner.
-- Chainlink VRF is used to obtain randomness for winner selection.
-- ETH balance is awarded to the winner and the raffle resets.
+bash
+Copy
+Edit
+export PRIVATE_KEY=your_wallet_private_key
+export SEPOLIA_RPC_URL=https://eth-sepolia.g.alchemy.com/v2/YOUR_ALCHEMY_KEY
+Run the deployment script:
 
----
+bash
+Copy
+Edit
+forge script script/DeployRaffle.s.sol:DeployRaffle --rpc-url $SEPOLIA_RPC_URL --broadcast --verify -vvvv
+--broadcast sends the transaction.
 
-## 🛠️ How to Deploy
+--verify verifies the contract on Etherscan.
 
-### 1. Install dependencies
-```bash
-forge install
-```
+-vvvv sets verbose logging level.
 
-### 2.Deploy to network
-```
-forge script script/DeployRaffle.s.sol:DeployRaffle --rpc-url <YOUR_RPC_URL> --private-key <YOUR_PRIVATE_KEY> --broadcast --verify
+🧪 Testing
+Run unit tests locally:
 
-```
-### 3. Local Deployment Notes
-- Automatically deploys VRFCoordinator and LinkToken mocks.
-- Automatically creates and funds VRF subscription locally.
-- Automatically adds the deployed Raffle contract as a VRF consumer.
+bash
+Copy
+Edit
+forge test
+Run tests against a forked Sepolia chain:
 
-### 4. Testnet Deployment Notes
-- Uses real Chainlink VRF Coordinator, LinkToken, and Subscription ID.
-- If needed, create and fund a subscription separately using scripts.
+bash
+Copy
+Edit
+forge test --fork-url https://eth-sepolia.g.alchemy.com/v2/YOUR_ALCHEMY_KEY -vvvv
+Forks the Sepolia chain locally using Anvil.
 
-## 🧪 Running Tests
+Allows interaction with real Chainlink VRF Coordinator and contracts.
 
-- Run unit tests:
-``` bash
-    
-forge test -vv
+⚡ Note: When running forked tests, impersonation may be required for VRF subscription management.
 
-```
-- Run tests against a forked Sepolia:
+🛠️ Scripts Summary
+DeployRaffle.s.sol: Deploys the Raffle contract and sets it up with Chainlink VRF.
 
-``` bash
-forge test --fork-url <SEPOLIA_RPC_URL> -vv
+HelperConfig.s.sol: Supplies network-specific constants (e.g., VRF Coordinator, Gas Lane, Subscription ID).
 
-```
-## 📜 Chainlink VRF Integration
+Interactions.s.sol: Adds the deployed Raffle contract as a consumer to Chainlink VRF subscription.
 
-### VRF Coordinator:
+📜 Raffle Contract Features
+Users can enter the Raffle by paying an entrance fee.
 
-- Local: Mocked
+Chainlink VRF is used to randomly pick a winner.
 
-- Sepolia: Real Chainlink VRF Coordinator
+Timed interval between draws.
 
-### Randomness Flow:
+Automatic funding with LINK tokens for randomness requests.
 
-- `performUpKeep()` requests random words.
+⚡ Chainlink Integration
+VRF Coordinator Address: 0x9DdfaCa8183c41ad55329BdeeD9F6A8d53168B1B (Sepolia)
 
-- Chainlink VRF responds via `fulfillRandomWords()`.
+Gas Lane and Subscription ID provided via HelperConfig.s.sol.
 
-- A random player is selected and wins the prize pool.
+🧹 Notes
+Forked tests require impersonating subscription owners when interacting with Chainlink VRF.
 
-### Subscription Management:
+Use vm.startPrank(ownerAddress) during forked testing to bypass ownership checks.
 
-- Create subscriptions with `CreateSubscription.s.sol`
+Always make sure your Sepolia subscription is funded if testing on-chain randomness.
 
-- Fund subscriptions with `FundSubscription.s.sol`
+📄 License
+This project is licensed under the MIT License.
 
-- Add consumer contracts with `AddConsumer.s.sol`
-
-## 🧩 Important Scripts
-
-| Script | Purpose |
-| --- | --- |
-| `CreateSubscription.s.sol` | Create a new VRF subscription |
-| `FundSubscription.s.sol` | Fund a VRF subscription with LINK |
-| `AddConsumer.s.sol` | Add Raffle contract as a consumer to the VRF subscription |
-
-## 🔑 Configurations (`HelperConfig.s.sol`)
-
-Supports two environments:
-
-- **Local Anvil network**
-  - Mocks deployed for VRFCoordinator and LinkToken
-  - Subscription is automatically created and funded
-
-- **Sepolia Testnet**
-  - Preconfigured addresses for VRF Coordinator, LINK token, and gas lanes
-  - Real subscription ID required
-
-> To add support for a new network, modify `HelperConfig.s.sol` accordingly.
-
----
-
-## 📈 Future Enhancements
-
-- Frontend dApp to interact with the raffle
-- Chainlink VRF fulfillment automation for local testing
-- Multiple winners feature
-- Prize pool splitting
-- Gas optimizations
-
----
-
-## 👨‍💻 Author
-
-- **Muhammad Fahad**
-
-
-
-
+✨ Happy Building!
+Would you also like me to generate a simple badge section (like “build passing”, "license MIT", etc.) at the top of the README if you want it to look even more GitHub-pro-level? 🚀
+I can add that if you want!
