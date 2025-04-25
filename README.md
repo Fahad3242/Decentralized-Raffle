@@ -42,9 +42,9 @@ export SEPOLIA_RPC_URL=https://eth-sepolia.g.alchemy.com/v2/YOUR_ALCHEMY_KEY
 ```bash
 forge script script/DeployRaffle.s.sol:DeployRaffle --rpc-url $SEPOLIA_RPC_URL --broadcast --verify -vvvv
 ```
-- \`--broadcast\`: sends the transaction  
-- \`--verify\`: verifies the contract on Etherscan  
-- \`-vvvv\`: sets verbose logging level  
+- `--broadcast`: sends the transaction  
+- `--verify`: verifies the contract on Etherscan  
+- `-vvvv`: sets verbose logging level  
 
 ---
 
@@ -66,9 +66,9 @@ forge test --fork-url https://eth-sepolia.g.alchemy.com/v2/YOUR_ALCHEMY_KEY -vvv
 
 ## 🛠️ Scripts Summary
 
-- \`DeployRaffle.s.sol\`: Deploys the Raffle contract and sets it up with Chainlink VRF.
-- \`HelperConfig.s.sol\`: Supplies network-specific constants (e.g., VRF Coordinator, Gas Lane, Subscription ID).
-- \`Interactions.s.sol\`: Adds the deployed Raffle contract as a consumer to Chainlink VRF subscription.
+- `DeployRaffle.s.sol`: Deploys the Raffle contract and sets it up with Chainlink VRF.
+- `HelperConfig.s.sol`: Supplies network-specific constants (e.g., VRF Coordinator, Gas Lane, Subscription ID).
+- `Interactions.s.sol`: Adds the deployed Raffle contract as a consumer to Chainlink VRF subscription.
 
 ---
 
@@ -84,16 +84,16 @@ forge test --fork-url https://eth-sepolia.g.alchemy.com/v2/YOUR_ALCHEMY_KEY -vvv
 ## ⚡ Chainlink Integration
 
 - **VRF Coordinator Address** (Sepolia):  
-  \`0x9DdfaCa8183c41ad55329BdeeD9F6A8d53168B1B\`
+  `0x9DdfaCa8183c41ad55329BdeeD9F6A8d53168B1B`
 
-- Other config (gas lane, subscription ID, etc.) is provided in \`HelperConfig.s.sol\`.
+- Other config (gas lane, subscription ID, etc.) is provided in `HelperConfig.s.sol`.
 
 ---
 
 ## 🧹 Notes
 
 - Forked tests use real Sepolia state but are **run locally**.
-- Use \`vm.startPrank(ownerAddress)\` during forked testing to impersonate subscription owners.
+- Use `vm.startPrank(ownerAddress)` during forked testing to impersonate subscription owners.
 - Always ensure your Sepolia subscription is funded when testing randomness.
 
 
