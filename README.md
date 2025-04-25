@@ -4,7 +4,7 @@
 
 ---
 
-## 📦 Project Structure
+##  Project Structure
 
 | Folder / File                 | Purpose                                                           |
 | ---------------------------- | ----------------------------------------------------------------- |
@@ -16,7 +16,7 @@
 
 ---
 
-## ⚙️ Technologies Used
+##  Technologies Used
 
 - **Solidity**
 - **Foundry** (Forge, Anvil)
@@ -27,7 +27,7 @@
 
 ---
 
-## 🚀 Deployment
+##  Deployment
 
 ### Deploy to Sepolia:
 
@@ -48,7 +48,7 @@ forge script script/DeployRaffle.s.sol:DeployRaffle --rpc-url $SEPOLIA_RPC_URL -
 
 ---
 
-## 🧪 Testing
+##  Testing
 
 ### Run unit tests locally:
 
@@ -64,7 +64,7 @@ forge test --fork-url https://eth-sepolia.g.alchemy.com/v2/YOUR_ALCHEMY_KEY -vvv
 
 ---
 
-## 🛠️ Scripts Summary
+##  Scripts Summary
 
 - `DeployRaffle.s.sol`: Deploys the Raffle contract and sets it up with Chainlink VRF.
 - `HelperConfig.s.sol`: Supplies network-specific constants (e.g., VRF Coordinator, Gas Lane, Subscription ID).
@@ -72,7 +72,7 @@ forge test --fork-url https://eth-sepolia.g.alchemy.com/v2/YOUR_ALCHEMY_KEY -vvv
 
 ---
 
-## 📜 Raffle Contract Features
+##  Raffle Contract Features
 
 - Users enter the raffle by paying an entrance fee.
 - Chainlink VRF is used to randomly select a winner.
@@ -81,7 +81,7 @@ forge test --fork-url https://eth-sepolia.g.alchemy.com/v2/YOUR_ALCHEMY_KEY -vvv
 
 ---
 
-## ⚡ Chainlink Integration
+##  Chainlink Integration
 
 - **VRF Coordinator Address** (Sepolia):  
   ```bash
@@ -92,7 +92,7 @@ forge test --fork-url https://eth-sepolia.g.alchemy.com/v2/YOUR_ALCHEMY_KEY -vvv
 
 ---
 
-## 🧹 Notes
+##  Notes
 
 - Forked tests use real Sepolia state but are **run locally**.
 - Use `vm.startPrank(ownerAddress)` during forked testing to impersonate subscription owners.
