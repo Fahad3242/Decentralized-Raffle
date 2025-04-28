@@ -98,5 +98,12 @@ forge test --fork-url https://eth-sepolia.g.alchemy.com/v2/YOUR_ALCHEMY_KEY -vvv
 - Use `vm.startPrank(ownerAddress)` during forked testing to impersonate subscription owners.
 - Always ensure your Sepolia subscription is funded when testing randomness.
 
+## Recent Updates
 
+- Enhanced **unit tests** to cover edge cases such as zero entrance fee, double-entry prevention, and Chainlink response failure scenarios.
+- Improved **deployment scripts** with dynamic network configuration for multi-chain compatibility.
+- Added **Chainlink VRF consumer registration** automation for ease of setup on new testnets.
 
+---
+
+✅ **Project Ready for Testnet Deployments and Community Audits!**
